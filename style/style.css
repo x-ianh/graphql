@@ -1,0 +1,425 @@
+/* ===== Global Reset & Theme ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ===== Typography ===== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap');
+
+:root {
+    --primary: #6A0DAD;          /* Royal Purple */
+    --primary-dark: #4B0082;     /* Indigo */
+    --secondary: #D4AF37;        /* Gold */
+    --dark: #121212;             /* Deep Black */
+    --light: #F8F7FF;            /* Soft Lavender-White */
+    --gray: #E0E0E0;
+    --shadow: 0 8px 24px rgba(106, 13, 173, 0.15);
+    --error: #FF6B6B;
+    --success: #4ECDC4;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--dark) 0%, #1e142c 100%);
+    color: var(--light);
+    line-height: 1.7;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* ===== Container & Layout ===== */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: rgba(30, 20, 50, 0.4);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(106, 13, 173, 0.3);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    min-height: 500px;
+}
+
+/* ===== View Management ===== */
+.view {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.view.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== Typography ===== */
+h1, h2, h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    color: var(--light);
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin: 25px 0 15px;
+    color: var(--secondary);
+    text-align: center;
+}
+
+h3 {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+    color: var(--primary);
+}
+
+/* ===== Login Page ===== */
+#loginForm {
+    max-width: 400px;
+    margin: 40px auto;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+}
+
+#loginForm:hover {
+    border-color: rgba(106, 13, 173, 0.5);
+    box-shadow: 0 8px 32px rgba(106, 13, 173, 0.2);
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin: 16px 0 6px;
+    font-weight: 500;
+    color: var(--light);
+    font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    margin-top: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+input[type="text"]:disabled,
+input[type="password"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ===== Buttons ===== */
+button {
+    margin-top: 24px;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--primary-dark), #8A2BE2);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(106, 13, 173, 0.4);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 100%;
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 0;
+    transition: all 0.6s ease;
+}
+
+button:active:not(:disabled)::after {
+    transform: scale(100) translate(-50%, -50%);
+    opacity: 0.4;
+}
+
+/* ===== Error Message ===== */
+.error {
+    color: var(--error);
+    margin-top: 16px;
+    font-size: 0.9rem;
+    text-align: center;
+    font-weight: 500;
+    min-height: 20px;
+    transition: all 0.3s ease;
+}
+
+/* ===== Profile Page ===== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    margin: 0;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+#logoutBtn {
+    background: var(--secondary);
+    color: var(--dark);
+    font-weight: 600;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    width: auto;
+    margin: 0;
+    transition: all 0.3s ease;
+}
+
+#logoutBtn:hover {
+    background: #E6C24C;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+/* ===== User Info & Stats ===== */
+#userInfo, #stats {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 20px;
+    border-radius: 16px;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+#userInfo:hover, #stats:hover {
+    border-color: rgba(106, 13, 173, 0.4);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+#userInfo h2 {
+    color: var(--secondary);
+    margin: 0 0 10px;
+    font-size: 1.4rem;
+}
+
+#userInfo p, #stats p {
+    font-size: 1rem;
+    margin: 8px 0;
+    color: var(--light);
+}
+
+#stats strong {
+    color: var(--secondary);
+}
+
+/* ===== Graphs Section ===== */
+#graphs {
+    margin-top: 30px;
+}
+
+.graph {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(106, 13, 173, 0.3);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 25px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.graph:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+    box-shadow: 0 12px 24px rgba(106, 13, 173, 0.3);
+}
+
+.graph h3 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--secondary);
+}
+
+.graph svg {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: visible;
+    width: 100%;
+    height: auto;
+}
+
+/* ===== Loading States ===== */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--gray);
+}
+
+.loading::before {
+    content: "⏳";
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ===== Success States ===== */
+.success {
+    color: var(--success);
+    background: rgba(78, 205, 196, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(78, 205, 196, 0.3);
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #logoutBtn {
+        margin-top: 10px;
+    }
+
+    .graph {
+        padding: 15px;
+    }
+
+    .graph svg {
+        width: 100%;
+        height: auto;
+    }
+
+    #loginForm {
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    #userInfo, #stats {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+        margin: 5px;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    button {
+        padding: 12px 20px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        padding: 12px;
+    }
+}
+
+/* ===== Accessibility ===== */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ===== Focus Indicators ===== */
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+}
+
+/* ===== High Contrast Mode ===== */
+@media (prefers-contrast: high) {
+    :root {
+        --primary: #8A2BE2;
+        --secondary: #FFD700;
+        --light: #FFFFFF;
+        --dark: #000000;
+    }
+}

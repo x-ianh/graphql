@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GraphQL App</title>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="stylesheet" href="style/style.css" />
+</head>
+<body>
+    <div class="container">
+        <!-- Login View -->
+        <div id="loginView" class="view active">
+            <h1>🔐 Graphql Login</h1>
+            <form id="loginForm">
+                <label for="identifier">Username or Email</label>
+                <input type="text" id="identifier" placeholder="your_username or you@email.com" required />
+
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required />
+
+                <button type="submit">Login</button>
+            </form>
+
+            <p id="error" class="error"></p>
+        </div>
+
+        <!-- Profile View -->
+        <div id="profileView" class="view">
+            <header>
+                <h1>👤 My Profile</h1>
+                <button id="logoutBtn" class="btn-logout">Logout</button>
+            </header>
+
+            <section id="userInfo">
+                <p>Loading user data...</p>
+            </section>
+
+            <section id="stats">
+                <h2>📊 Statistics</h2>
+                <div id="xpDisplay"></div>
+                <div id="gradesDisplay"></div>
+            </section>
+
+            <section id="graphs">
+                <h2>📈 My Learning Journey</h2>
+
+                <div class="graph">
+                    <h3>XP Earned Over Time</h3>
+                    <div id="graph1Container"></div>
+                </div>
+
+                <div class="graph">
+                    <h3>Project Success Rate</h3>
+                    <div id="graph2Container"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Load JavaScript Modules -->
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
