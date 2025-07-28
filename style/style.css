@@ -423,3 +423,159 @@ input:focus-visible {
         --dark: #000000;
     }
 }
+
+/* ===== Animated Stars Background ===== */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.1) 1px, transparent 2px);
+    background-size: 500px 500px, 300px 300px, 100px 100px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    pointer-events: none;
+    z-index: -1;
+    animation: twinkle 10s linear infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.stars::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        /* Big slow stars */
+        radial-gradient(circle, #fff, transparent 50%) 20% 30%,
+        radial-gradient(circle, #fff, transparent 50%) 80% 70%,
+        radial-gradient(circle, #fff, transparent 50%) 30% 80%,
+        /* Small fast stars */
+        radial-gradient(circle, #ddd, transparent 50%) 60% 20%,
+        radial-gradient(circle, #ddd, transparent 50%) 90% 40%;
+    background-size: 0 0;
+    animation: stars 20s infinite linear;
+}
+
+@keyframes stars {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 1000% 1000%; }
+}
+
+/* Mobile: Center and scale down charts */
+.graph {
+    padding: 15px;
+}
+
+.graph svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+@media (max-width: 480px) {
+    /* Stack XP and project stats in a single column */
+    #stats {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #xpDisplay > div,
+    #gradesDisplay > div {
+        text-align: center;
+    }
+
+    /* Make stats full width */
+    #gradesDisplay > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+
+    #gradesDisplay strong {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.6rem;
+    }
+    h2 {
+        font-size: 1.4rem;
+    }
+    h3 {
+        font-size: 1.1rem;
+    }
+    .graph h3 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    button {
+        padding: 12px 16px;
+        font-size: 1rem;
+    }
+
+    #logoutBtn {
+        padding: 10px 16px;
+        font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        padding: 12px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    #userInfo, #stats {
+        padding: 15px;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    section {
+        margin: 20px 0;
+    }
+    .graph {
+        margin: 25px 0;
+    }
+}
