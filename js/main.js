@@ -168,7 +168,6 @@ class App {
     }
 
     // Get current application status for debugging
-    // Run this "window.app.getStatus()" in console to get health check
     getStatus() {
         return {
             currentView: this.appState?.currentView,

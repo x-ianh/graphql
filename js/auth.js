@@ -6,8 +6,8 @@ class AuthService {
         const encoded = btoa(`${identifier}:${password}`);
         console.log("Authorization header:", `Basic ${encoded}`);
 
-        // Send login request to API
-        const res = await fetch("https://learn.reboot01.com/api/auth/signin  ", {
+        // Send login request to API - FIXED: removed extra spaces from URL
+        const res = await fetch("https://learn.reboot01.com/api/auth/signin", {
             method: "POST",
             headers: {
                 "Authorization": `Basic ${encoded}`

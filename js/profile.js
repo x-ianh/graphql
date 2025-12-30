@@ -2,6 +2,7 @@
 import GraphQLService from './graphql.js';
 import DataProcessor from './data.js';
 import ChartRenderer from './chart.js';
+import Modal from './modal.js';
 
 class ProfileController {
     constructor(appState) {
@@ -52,7 +53,8 @@ class ProfileController {
         }
         // Show loading state for charts
         ChartRenderer.renderLoadingState("#graph1Container", "Loading XP chart...");
-        ChartRenderer.renderLoadingState("#graph2Container", "Loading project chart...");
+        ChartRenderer.renderLoadingState("#graph2Container", "Loading audit ratio...");
+        ChartRenderer.renderLoadingState("#graph3Container", "Loading project chart...");
     }
 
     // Display error messages when data loading fails
@@ -71,7 +73,8 @@ class ProfileController {
         }
         // Show error state for charts
         ChartRenderer.renderErrorState("#graph1Container", "Failed to load XP chart");
-        ChartRenderer.renderErrorState("#graph2Container", "Failed to load project chart");
+        ChartRenderer.renderErrorState("#graph2Container", "Failed to load audit ratio");
+        ChartRenderer.renderErrorState("#graph3Container", "Failed to load project chart");
     }
 
     // Display user information in the profile view
@@ -101,14 +104,15 @@ class ProfileController {
     }
 
     // Display user statistics (XP, projects)
+    // UPDATED: Now uses formatXP instead of formatNumber for XP display
     displayStats(stats) {
         if (!this.xpDisplayElement || !this.gradesDisplayElement) return;
         
-        // Display total XP earned
+        // Display total XP earned with KB/MB formatting
         this.xpDisplayElement.innerHTML = `
             <div style="text-align: center; padding: 15px; background: rgba(106, 13, 173, 0.1); border-radius: 12px;">
                 <div style="font-size: 32px; color: var(--secondary); font-weight: bold;">
-                    ${DataProcessor.formatNumber(stats.totalXp)}
+                    ${DataProcessor.formatXP(stats.totalXp)}
                 </div>
                 <p style="margin: 5px 0 0; color: var(--light);">Total XP Earned</p>
             </div>
@@ -157,9 +161,26 @@ class ProfileController {
         this.showLoadingState();
         
         try {
-            console.log("Fetching user data from GraphQL...");
-            const userData = await GraphQLService.fetchUserProfile(this.appState.jwt, userId);
-            console.log("GraphQL response received:", userData);
+            console.log("Fetching user data from GraphQL with MULTIPLE queries...");
+            
+            // Execute all 4 queries
+            const userInfoData = await GraphQLService.fetchUserInfo(this.appState.jwt, userId);
+            const xpData = await GraphQLService.fetchUserXP(this.appState.jwt, userId);
+            const progressData = await GraphQLService.fetchUserProgress(this.appState.jwt, userId);
+            const auditData = await GraphQLService.fetchAuditRatio(this.appState.jwt, userId);
+            
+            console.log("All GraphQL queries completed successfully");
+            
+            // Combine data into userData object for compatibility
+            const userData = {
+                user: userInfoData.user,
+                transactions: xpData.transactions,
+                progress: progressData.progress,
+                up: auditData.up,
+                down: auditData.down
+            };
+            
+            console.log("Combined data:", userData);
             
             // Validate response
             if (!userData || !userData.user || userData.user.length === 0) {
@@ -173,6 +194,7 @@ class ProfileController {
             console.log("Profile data loaded successfully");
             console.log("Progress data:", userData.progress);
             console.log("XP transactions:", userData.transactions.nodes?.length || 0);
+            console.log("Audit data:", { up: userData.up, down: userData.down });
             
             // Render charts
             this.renderCharts(userData, stats);
@@ -201,22 +223,35 @@ class ProfileController {
                 ChartRenderer.renderErrorState("#graph1Container", "No XP transaction data available");
             }
             
+            // Render audit ratio chart
+            if (userData.up && userData.down) {
+                ChartRenderer.renderAuditRatioGraph({ up: userData.up, down: userData.down }, "#graph2Container");
+            } else {
+                ChartRenderer.renderErrorState("#graph2Container", "No audit data available");
+            }
+            
             // Render pass/fail chart
-            ChartRenderer.renderPassFailBarChart(stats.pass, stats.fail, "#graph2Container");
+            ChartRenderer.renderPassFailBarChart(stats.pass, stats.fail, "#graph3Container");
             
         } catch (err) {
             console.error("Error rendering charts:", err);
             ChartRenderer.renderErrorState("#graph1Container", "Error rendering XP chart");
-            ChartRenderer.renderErrorState("#graph2Container", "Error rendering project chart");
+            ChartRenderer.renderErrorState("#graph2Container", "Error rendering audit ratio");
+            ChartRenderer.renderErrorState("#graph3Container", "Error rendering project chart");
         }
     }
 
     // Handle user logout
-    handleLogout() {
-        console.log("Logging out user");
+    async handleLogout() {
+        console.log("Logout requested");
         
-        // Show confirmation dialog
-        if (confirm("Are you sure you want to log out?")) {
+        // Show custom confirmation dialog
+        const confirmed = await Modal.confirm(
+            "Are you sure you want to log out?",
+            "Confirm Logout"
+        );
+        
+        if (confirmed) {
             // Clear token and user data
             this.appState.clearToken();
             this.appState.user = null;
@@ -246,8 +281,10 @@ class ProfileController {
         // Clear charts
         const graph1 = document.querySelector("#graph1Container");
         const graph2 = document.querySelector("#graph2Container");
+        const graph3 = document.querySelector("#graph3Container");
         if (graph1) graph1.innerHTML = '';
         if (graph2) graph2.innerHTML = '';
+        if (graph3) graph3.innerHTML = '';
     }
 
     // Method to refresh profile data
